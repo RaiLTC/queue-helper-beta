@@ -2,6 +2,12 @@
 
 All notable changes to Queue Helper. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.07] - 2026-11-14
+
+### Fixed
+
+- Near either end of the bar, the forecast time sits beside its needle instead of running off the edge
+
 ## [0.1.06] - 2026-11-14
 
 ### Changed

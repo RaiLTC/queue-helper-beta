@@ -10,6 +10,8 @@ import { StrainSummary } from './StrainSummary.js';
 
 /** How close to an end a section's middle can be before its label lines up with that end instead. */
 const EDGE = 0.08;
+/** How close to an end the forecast needle can be before its time moves beside it (Queue Strain's 4%). */
+const TIME_EDGE = 0.04;
 const pct = (at: number) => `${at * 100}%`;
 
 export const StrainBar = ({ store }: { store: Store }) => {
@@ -39,8 +41,9 @@ export const StrainBar = ({ store }: { store: Store }) => {
 							style={{ left: pct(edges[k]!), width: pct(edges[k + 1]! - edges[k]!), background: z.color }} />
 					))}
 					<span className="bar-needle ghost" style={{ left: pct(ghost) }} />
-					{/* the forecast needle's time, centred right under it */}
-					<span className="ghost-time" style={{ left: pct(ghost) }}>{durShort(ghostT)}</span>
+					{/* the forecast needle's time, centred under it; near an end of the bar it sits beside the needle instead,
+					    towards the middle (as Queue Strain's bar did) */}
+					<span className={`ghost-time${ghost < TIME_EDGE ? ' after' : ghost > 1 - TIME_EDGE ? ' before' : ''}`} style={{ left: pct(ghost) }}>{durShort(ghostT)}</span>
 					<span className="bar-needle" style={{ left: pct(now) }} />
 				</div>
 			</div>
