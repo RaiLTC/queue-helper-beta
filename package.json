@@ -1,6 +1,6 @@
 {
   "name": "queue-helper",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": true,
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -16,14 +16,15 @@
     "url": "git+https://github.com/RaiLTC/queue-helper-beta.git"
   },
   "scripts": {
-    "build": "oss-idle-addon build",
-    "dev": "oss-idle-addon build --watch",
+    "build": "npm run changelog && oss-idle-addon build",
+    "dev": "npm run changelog && oss-idle-addon build --watch",
     "setup": "oss-idle-addon setup",
     "release": "oss-idle-addon release",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "npm run changelog && tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
     "test": "node --test test/",
-    "check": "npm run typecheck && npm run lint && npm test && npm run build"
+    "check": "npm run typecheck && npm run lint && npm test && npm run build",
+    "changelog": "node scripts/changelog.mjs"
   },
   "dependencies": {
     "@oss-idle/addon-sdk": "0.9.0"

@@ -2,7 +2,7 @@
 // No DOM: everything here can run in a test.
 
 import { forecast, initCache, saveCache } from './forecast.js';
-import { MINDBLOCK, SKILLS, gameRows, geneticsFor, num, readQueue, setting } from './game.js';
+import { MINDBLOCK, SKILLS, gameRows, geneticsFor, num, queueKey, readQueue, setting } from './game.js';
 import { barKnots, barOf, stageOf } from './rules/fatigue.js';
 import { fatigueGenesOf } from './rules/genes.js';
 import { SETTINGS } from './settings.js';
@@ -14,14 +14,14 @@ export class ScanError extends Error {}
  * @typedef {{ done: number, text: 'reading' | 'simulating' | 'waiting', waitSec?: number }} ScanProgress
  * @typedef {{ t: number, bar: number, minutes: number }} Sample
  * @typedef {{ start: number, title: string, xp: number, strained: number, lengthMin: number, bar: number, trend: number, passed: boolean }} Play
- * @typedef {{ hours: number, now: Sample & { stage: string }, samples: Sample[], plays: Play[], loop: { plays: number, sec: number }, scannedAt: number }} Forecast
+ * @typedef {{ hours: number, now: Sample & { stage: string }, samples: Sample[], plays: Play[], loop: { plays: number, sec: number }, scannedAt: number, queueKey: string[] }} Forecast
  */
 
 /**
- * @param {{ api: any, hours: number, signal: AbortSignal, onProgress: (p: ScanProgress) => void }} options
+ * @param {{ api: any, hours: number, runs: number, quick?: boolean, signal: AbortSignal, onProgress: (p: ScanProgress) => void }} options
  * @returns {Promise<Forecast>}
  */
-export async function runScan({ api, hours, signal, onProgress }) {
+export async function runScan({ api, hours, runs, quick = false, signal, onProgress }) {
 	if (!api || typeof api.simulate !== 'function') throw new ScanError('noSimulator');
 	onProgress({ done: 0, text: 'reading' });
 	await initCache();
@@ -48,7 +48,8 @@ export async function runScan({ api, hours, signal, onProgress }) {
 
 	const ctx = {
 		api, row, genes, geneSource, gear, startMinutes, hours,
-		runs: SETTINGS.runsPerPlay,
+		runs: runs || SETTINGS.runsPerPlay,
+		quick,
 		delaySec: Math.max(0, num(setting('autopilotDelay', 30))),
 		rate: num(setting('rate', 1)) || 1,
 		mods: Array.isArray(mods) ? mods : [],
@@ -85,6 +86,7 @@ export async function runScan({ api, hours, signal, onProgress }) {
 		})),
 		loop: { plays: result.loopPlays, sec: result.loopSec },
 		scannedAt: Date.now(),
+		queueKey: queueKey(queue.entries),
 	};
 }
 

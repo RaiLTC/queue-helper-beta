@@ -2,6 +2,23 @@
 
 All notable changes to Queue Helper. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.03] - 2026-11-14
+
+### Added
+
+- Settings: forecast, appearance and window options, saved as you change them, with Reset and Undo
+- What's new, with a dot on its icon until you've seen the latest version
+- Accent colour: any stage colour (Peak by default), your current stage, or your own
+- The window fades while the mouse is away, lets clicks through over game menus, and shows the chat through it
+- Rescans by itself when you edit the queue
+
+### Changed
+
+- The gauge shows your stage first, with the % under it; staying in Peak reads "Stable for 6 hours"
+- Stage colours match the game's bar: Fatigued and the XP Penalty are purple
+- "Past Peak" is now "Pushing", as in the game
+- The scan's progress bar fills through the strain colours
+
 ## [0.1.02] - 2026-11-14
 
 ### Changed

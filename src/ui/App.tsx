@@ -1,7 +1,8 @@
-// The window: header, side menu, scan bar and the open view. A part that fails shows a short message instead of
-// taking the whole window down.
+// The window: header, side menu and the open view. A part that fails shows a short message instead of taking the
+// whole window down.
 
-import { Component, type ReactNode } from 'react';
+import { Component, type CSSProperties, type ReactNode } from 'react';
+import type { Settings } from '../settings.js';
 import { TEXT } from '../text.js';
 import { Gauge } from './components/Gauge.js';
 import { Header } from './components/Header.js';
@@ -9,7 +10,10 @@ import { QueueForecast } from './components/QueueForecast.js';
 import { Rail } from './components/Rail.js';
 import { ScanBar } from './components/ScanBar.js';
 import { StrainGraph } from './components/StrainGraph.js';
-import { type Store, useStore } from './store.js';
+import { SettingsPage } from './pages/SettingsPage.js';
+import { WhatsNew, latestVersion, newer } from './pages/WhatsNew.js';
+import { type Store, type View, useStore } from './store.js';
+import { accentColor, accentVars } from './theme.js';
 
 class Boundary extends Component<{ children: ReactNode }, { failed: boolean }> {
 	override state = { failed: false };
@@ -33,19 +37,51 @@ const Overview = ({ store }: { store: Store }) => {
 	);
 };
 
-export type AppProps = { store: Store, version: string, onScan: () => void, onStop: () => void, onClose: () => void };
+export type AppProps = {
+	store: Store,
+	version: string,
+	onScan: () => void,
+	onStop: () => void,
+	onClose: () => void,
+	onView: (view: View) => void,
+	onSettings: (patch: Partial<Settings>) => void,
+	/** The version the player had seen before opening What's new, for its New tags. */
+	seenBefore: () => string,
+};
 
-export const App = ({ store, version, onScan, onStop, onClose }: AppProps) => {
+export const App = ({ store, version, onScan, onStop, onClose, onView, onSettings, seenBefore }: AppProps) => {
 	const open = useStore(store, (s) => s.open);
-	const tab = useStore(store, (s) => s.tab);
+	const view = useStore(store, (s) => s.view);
+	const settings = useStore(store, (s) => s.settings);
+	const stage = useStore(store, (s) => s.forecast?.now.stage ?? null);
+	const passThrough = useStore(store, (s) => s.passThrough);
+	const chatHole = useStore(store, (s) => s.chatHole);
+
+	const latest = latestVersion();
+	const unread = !!latest && (!settings.seenVersion || newer(latest, settings.seenVersion));
+	const classes = ['window', settings.fade && 'fade', !settings.animations && 'still', passThrough !== null && 'passing'].filter(Boolean).join(' ');
+	const style = {
+		...accentVars(accentColor(settings, stage)),
+		'--fade-opacity': settings.fadeOpacity / 100,
+		...(passThrough !== null ? { '--pass-opacity': passThrough } : {}),
+		...(chatHole ? { clipPath: chatHole } : {}),
+	} as CSSProperties;
+
+	const tab = view === 'settings' || view === 'whatsnew' ? null : view;
 	return (
-		<div className="window" hidden={!open} role="dialog" aria-label={TEXT.name}>
-			<Header version={version} onClose={onClose} />
+		<div className={classes} style={style} hidden={!open} role="dialog" aria-label={TEXT.name}>
+			<Header version={version} view={view} unread={unread} onView={onView} onClose={onClose} />
 			<div className="body">
-				<Rail tab={tab} onTab={(t) => store.set({ tab: t })} />
+				<Rail tab={view} onTab={(t) => onView(t)} />
 				<main className="content">
-					<ScanBar store={store} onScan={onScan} onStop={onStop} />
-					{tab === 'overview' ? <Overview store={store} /> : <div className="card empty">{TEXT.comingSoon}</div>}
+					{view === 'settings' ? <Boundary><SettingsPage store={store} onChange={onSettings} /></Boundary>
+						: view === 'whatsnew' ? <Boundary><WhatsNew seenBefore={seenBefore()} /></Boundary>
+							: (
+								<>
+									<ScanBar store={store} onScan={onScan} onStop={onStop} />
+									{tab === 'overview' ? <Overview store={store} /> : <div className="card empty">{TEXT.comingSoon}</div>}
+								</>
+							)}
 				</main>
 			</div>
 		</div>

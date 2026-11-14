@@ -51,6 +51,6 @@ export default tseslint.config(
 			],
 		},
 	},
-	// tests run in Node, not in the game: node: imports are fine there
-	{ files: ['test/**'], rules: { 'no-restricted-syntax': 'off' } },
+	// tests and build scripts run in Node, not in the game: node: imports are fine there
+	{ files: ['test/**', 'scripts/**'], rules: { 'no-restricted-syntax': 'off' } },
 );

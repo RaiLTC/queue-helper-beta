@@ -12,15 +12,20 @@ export const ScanBar = ({ store, onScan, onStop }: { store: Store, onScan: () =>
 	const scannedAt = useStore(store, (s) => s.forecast?.scannedAt ?? 0);
 	const scanning = scan.status === 'scanning';
 
-	// "Scanned 2m ago" stays current while the window is open
+	// "Scanned 2m ago" stays current: a redraw every 30 seconds, only while it's on screen
 	const [, tick] = useState(0);
 	useEffect(() => {
+		if (!scannedAt || scanning) return;
 		const id = setInterval(() => tick((n) => n + 1), 30000);
 		return () => clearInterval(id);
-	}, []);
+	}, [scannedAt, scanning]);
 
-	const setHours = (text: string) => {
-		const n = Math.round(Number(text));
+	// the field follows the look-ahead (it changes with the Default look ahead setting) but can be typed in freely
+	const [text, setText] = useState(String(lookAhead));
+	useEffect(() => setText(String(lookAhead)), [lookAhead]);
+	const setHours = (value: string) => {
+		setText(value);
+		const n = Math.round(Number(value));
 		if (n >= 1 && n <= 24) store.set({ lookAhead: n });
 	};
 
@@ -30,7 +35,7 @@ export const ScanBar = ({ store, onScan, onStop }: { store: Store, onScan: () =>
 				<span className="field-label">{TEXT.scan.lookAhead}</span>
 				<input
 					inputMode="numeric"
-					defaultValue={lookAhead}
+					value={text}
 					aria-label={`${TEXT.scan.lookAhead} (hours)`}
 					maxLength={2}
 					onChange={(e) => setHours(e.currentTarget.value)}
@@ -45,7 +50,7 @@ export const ScanBar = ({ store, onScan, onStop }: { store: Store, onScan: () =>
 							<span>{scan.text}</span>
 							<span className="muted">{Math.round(scan.done * 100)}%</span>
 						</div>
-						<div className="progress"><i style={{ transform: `scaleX(${scan.done})` }} /></div>
+						<div className="progress"><i style={{ transform: `scaleX(${1 - scan.done})` }} /></div>
 					</>
 				) : scan.status === 'error' ? (
 					<span className="error">{scan.message}</span>

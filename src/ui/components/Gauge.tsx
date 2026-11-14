@@ -66,8 +66,8 @@ export const Gauge = ({ store }: { store: Store }) => {
 					<Needle className="needle" bar={now} from={53} to={75} />
 				</svg>
 				<div className="gauge-center">
-					<div className="gauge-pct" style={{ color: current.color }}>{pctText(now)}</div>
-					<div className="muted">{stageName(now)}</div>
+					<div className="gauge-stage" style={{ color: current.color }}>{stageName(now)}</div>
+					<div className="muted">{pctText(now)}</div>
 				</div>
 			</div>
 			{hoverT === null ? (
