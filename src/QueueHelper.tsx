@@ -11,7 +11,7 @@ import { TEXT } from './text.js';
 import { App } from './ui/App.js';
 import { latestVersion } from './ui/pages/WhatsNew.js';
 import { type View, createStore } from './ui/store.js';
-import styles from './ui/styles.css';
+import { STYLESHEET } from './ui/stylesheet.js';
 import { attachWindowBehaviours } from './ui/window/behaviours.js';
 
 const TOGGLE = 'Alt+Shift+F';
@@ -41,7 +41,7 @@ export class QueueHelper extends ReactAddon {
 	private seenBefore = '';
 
 	constructor() {
-		super({ name: TEXT.name, overlayId: 'queue-helper', styles });
+		super({ name: TEXT.name, overlayId: 'queue-helper', styles: STYLESHEET });
 	}
 
 	private get game(): Host {

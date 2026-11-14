@@ -1,0 +1,22 @@
+/* The scan bar: look-ahead field, progress and Scan / Stop. */
+
+.scan { display: flex; align-items: center; gap: 14px; }
+.field {
+	display: inline-flex; align-items: center; gap: 6px; flex: none;
+	height: var(--control); padding: 0 10px;
+	background: var(--field); border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+}
+.field:hover { border-color: #4a4b55; }
+.field:focus-within { border-color: var(--a); }
+.field-label { color: var(--muted); font-size: var(--fs-small); padding-right: 8px; border-right: 1px solid var(--line); line-height: 16px; }
+.field input { width: 3ch; padding: 0; text-align: right; background: none; border: 0; outline: 0; }
+.field-unit { color: var(--muted); font-size: var(--fs-small); }
+.scan-mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.scan-line { display: flex; justify-content: space-between; font-size: var(--fs-small); }
+/* the strain colours, fixed across the track; a cover shrinks from the right to reveal them (transform only) */
+.progress {
+	position: relative; height: 4px; border-radius: 2px; overflow: hidden;
+	background: linear-gradient(90deg, var(--cold) 0%, var(--warming) 30%, var(--peak) 50%, var(--pushing) 70%, var(--fatigued) 100%);
+}
+.progress i { position: absolute; inset: 0; background: var(--line); transform-origin: right; transform: scaleX(1); }
+.btn-stop { color: #fff; background: var(--danger); }

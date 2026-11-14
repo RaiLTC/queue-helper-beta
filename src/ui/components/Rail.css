@@ -1,0 +1,13 @@
+/* The side menu. */
+
+.rail { display: flex; flex-direction: column; gap: 2px; padding: 6px 4px; }
+.rail-item {
+	display: flex; flex-direction: column; align-items: center; gap: 3px;
+	padding: 8px 0; color: var(--muted); font-size: 11px;
+	background: none; border: 0; border-radius: var(--radius-sm);
+}
+.rail-item:hover { color: var(--text); }
+.rail-icon { display: inline-flex; padding: 2px 14px; border-radius: 999px; }
+.rail-item:hover .rail-icon { background: var(--hover); }
+.rail-item.on { color: var(--text); }
+.rail-item.on .rail-icon { color: var(--ink); background: var(--soft); }

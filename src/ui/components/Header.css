@@ -1,0 +1,14 @@
+/* The header: title, version, shortcut and its icon buttons. */
+
+.head { display: flex; align-items: center; gap: 6px; padding: 2px 4px 10px; }
+.title { font-size: var(--fs-title); font-weight: 500; }
+.head-keys { margin-left: auto; margin-right: 4px; }
+.head-sep { width: 1px; height: 18px; background: var(--line); margin: 0 2px; }
+.icon-btn {
+	position: relative; display: inline-flex; align-items: center; justify-content: center;
+	width: 28px; height: 28px; padding: 0;
+	color: var(--muted); background: none; border: 0; border-radius: 6px;
+}
+.icon-btn:hover { color: var(--text); background: var(--line); }
+.icon-btn.on { color: var(--ink); background: var(--soft); }
+.dot { position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--a); box-shadow: 0 0 0 2px var(--bg); }

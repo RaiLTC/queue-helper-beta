@@ -1,0 +1,14 @@
+/* What's new: the notice and the releases. */
+
+.notice { padding: 10px 14px; color: #e9d8a6; background: #2a2820; border-radius: var(--radius); line-height: 1.5; }
+.release { padding: 0; }
+.release-head { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 14px; text-align: left; background: none; border: 0; border-radius: var(--radius); }
+.release-head:hover { background: var(--hover); }
+.release-version { font-size: var(--fs-title); font-weight: 500; }
+.tag { padding: 2px 8px; font-size: 11px; color: var(--ink); background: var(--soft); border-radius: 999px; }
+.chevron { margin-left: auto; color: var(--muted); transition: transform var(--ease); transform: rotate(-90deg); }
+.release.open .chevron { transform: none; }
+.release-body { padding: 0 14px 12px; }
+.release-kind { margin: 8px 0 2px; font-size: var(--fs-small); font-weight: 500; color: var(--muted); }
+.release ul { margin: 0; padding-left: 18px; line-height: 1.7; }
+.release li::marker { color: #5f606a; }

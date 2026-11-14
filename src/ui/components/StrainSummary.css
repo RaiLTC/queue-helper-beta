@@ -1,0 +1,8 @@
+/* Shared by the gauge and the bar: the stage name and the two summary lines. */
+
+/* the stage is what matters, so it's the big text; the % is the detail under it */
+.stage-name { font-size: var(--fs-stage); font-weight: 500; line-height: 1.15; white-space: nowrap; }
+/* the summary keeps one size whatever it says (hovering the graph changes the text): two single lines */
+.summary { height: 40px; }
+.summary > div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.summary-line { font-size: var(--fs-line); font-weight: 500; }

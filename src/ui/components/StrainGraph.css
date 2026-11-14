@@ -1,0 +1,14 @@
+/* Strain over time. */
+
+.graph { display: block; width: 100%; height: auto; margin-top: 6px; }
+.band.peak { fill: var(--peak); opacity: 0.14; }
+.band.penalty { fill: var(--fatigued); opacity: 0.13; }
+.penalty-line { stroke: var(--fatigued); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.band-label { font-size: 13px; text-anchor: end; }
+.band-label.peak { fill: var(--peak); }
+.band-label.penalty { fill: var(--fatigued); }
+.grid { stroke: var(--line); stroke-width: 0.6; }
+.axis { fill: var(--muted); font-size: 12px; text-anchor: middle; }
+.strain { fill: none; stroke: var(--text); stroke-width: 2; stroke-linejoin: round; }
+.cursor { stroke: var(--muted); stroke-width: 1; }
+.cursor-dot { fill: var(--text); }

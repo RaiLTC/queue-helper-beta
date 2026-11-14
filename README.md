@@ -23,7 +23,7 @@ Nothing else leaves your computer.
 | `src/text.ts` | Every word players see |
 | `src/core/` | No DOM: the game's rules, the forecast engine, the scan, game modes |
 | `src/core/modes/` | One file per game mode |
-| `src/ui/` | The window: state, components, styles (design tokens at the top of `styles.css`) |
+| `src/ui/` | The window: state, components and pages, each with its own `.css` beside it; shared styles and design tokens in `styles.css`, joined in `stylesheet.ts` |
 | `test/` | Tests for the rules (`node:test`) |
 
 ## Developing
