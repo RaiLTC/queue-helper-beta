@@ -2,6 +2,12 @@
 
 All notable changes to Queue Helper. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.08] - 2026-11-14
+
+### Changed
+
+- The window hides completely while the game's options or Add-ons page is open
+
 ## [0.1.07] - 2026-11-14
 
 ### Fixed

@@ -29,10 +29,10 @@ export const attachWindowBehaviours = ({ store, windowEl, close, rescan }: Optio
 		const s = store.get().settings;
 		const win = windowEl();
 
-		// a game menu open under the window: clicks go through it, and it turns see-through (hidden on Add-ons)
-		const passThrough = s.passGameMenus && addonsPageOpen() ? 0
-			: s.passGameMenus && optionsOpen() ? 0.1
-				: s.passModsMenu && modsMenuOpen() ? s.fadeOpacity / 100 : null;
+		// a game menu open under the window: clicks go through it. Over options and Add-ons it hides completely
+		// (opacity 0); over the mods menu it keeps the faded opacity, so the queue it edits stays in view
+		const passThrough = s.passGameMenus && (addonsPageOpen() || optionsOpen()) ? 0
+			: s.passModsMenu && modsMenuOpen() ? s.fadeOpacity / 100 : null;
 
 		// the open chat shows through: the part of the window over it is cut out
 		let chatHole = '';
