@@ -1,0 +1,8 @@
+{
+  "name": "Queue Helper",
+  "license": "AGPL-3.0-only",
+  "entry": "src/index.ts",
+  "outfile": "dist/queue-helper.js",
+  "sharedReact": true,
+  "types": ["gameplay"]
+}

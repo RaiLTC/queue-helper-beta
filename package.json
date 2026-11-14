@@ -1,0 +1,41 @@
+{
+  "name": "queue-helper",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "description": "Queue Helper: forecasts what the queue you're playing does to your strain and XP in oss!idle.",
+  "keywords": [
+    "queue",
+    "strain",
+    "xp",
+    "forecast"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RaiLTC/queue-helper-beta.git"
+  },
+  "scripts": {
+    "build": "oss-idle-addon build",
+    "dev": "oss-idle-addon build --watch",
+    "setup": "oss-idle-addon setup",
+    "release": "oss-idle-addon release",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "node --test test/",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build"
+  },
+  "dependencies": {
+    "@oss-idle/addon-sdk": "0.9.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "eslint": "^10.13.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.72.0"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}
