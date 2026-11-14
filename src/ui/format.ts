@@ -1,9 +1,16 @@
 // Numbers and times as players read them. Intl does the number work; the times are short enough to write out.
 
-const compact = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
+const compact = new Intl.NumberFormat('en', { notation: 'compact', minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-/** 18400 → "18.4K". */
-export const xpText = (n: number): string => compact.format(Math.round(n));
+/** 18400 → "18.4K", 6000 → "6.0K", 111 → "111". */
+export const xpText = (n: number): string => (n >= 1000 ? compact.format(n) : String(Math.round(n)));
+
+/** "Artist - Title [Difficulty]" → "Title": the full name stays in the row's tooltip. */
+export const mapTitle = (full: string): string => {
+	const noDiff = full.replace(/\s*\[[^\]]*\]\s*$/, '');
+	const dash = noDiff.indexOf(' - ');
+	return (dash > 0 ? noDiff.slice(dash + 3) : noDiff) || full;
+};
 
 /** 0.263 → "26%". */
 export const pctText = (bar: number): string => `${Math.round(bar * 100)}%`;

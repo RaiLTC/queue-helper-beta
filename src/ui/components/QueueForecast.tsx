@@ -2,7 +2,7 @@
 // strains you, and the bar after it with the game's arrows (‹ cools on the left, › warms on the right).
 
 import { TEXT } from '../../text.js';
-import { clockText, durText, lengthText, pctText, xpText } from '../format.js';
+import { clockText, durText, lengthText, mapTitle, pctText, xpText } from '../format.js';
 import { type Store, useStore } from '../store.js';
 import { zoneOf } from '../zones.js';
 
@@ -27,7 +27,7 @@ export const QueueForecast = ({ store }: { store: Store }) => {
 					return (
 						<div className="row" key={i}>
 							<span className="muted">{clockText(p.start)}</span>
-							<span className="ellipsis" title={p.title}>{p.title}{p.passed ? '' : <span className="error"> · {TEXT.overview.failed}</span>}</span>
+							<span className="ellipsis" title={p.title}>{mapTitle(p.title)}{p.passed ? '' : <span className="error"> · {TEXT.overview.failed}</span>}</span>
 							<span className="num">{xpText(p.xp)}</span>
 							<span className="num">{lengthText(p.strained)} <span className="muted">/ {lengthText(p.lengthMin)}</span></span>
 							<span className="bar-cell" title={warm ? TEXT.overview.heats : cool ? TEXT.overview.cools : undefined}>
