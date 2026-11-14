@@ -173,17 +173,19 @@ button:disabled { cursor: default; opacity: 0.4; }
 /* the bar (Strain display: Bar) */
 .strain-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 14px 18px; }
 .bar-top { position: relative; height: 42px; }
-.bar-label { position: absolute; bottom: 0; display: flex; flex-direction: column; align-items: center; line-height: 1.15; white-space: nowrap; transition: left var(--ease), transform var(--ease); }
+.bar-label { position: absolute; bottom: 6px; display: flex; flex-direction: column; align-items: center; line-height: 1.15; white-space: nowrap; transition: left var(--ease), transform var(--ease); }
 .bar-label.middle { transform: translateX(-50%); }
 .bar-label.start { left: 0; align-items: flex-start; }
 .bar-label.end { right: 0; align-items: flex-end; }
-.bar-track { position: relative; height: 52px; }
+/* the bar sits in the middle of the card: the stage label takes 42px above it, and the same 42px below holds the
+   forecast needle's time */
+.bar-track { position: relative; height: 12px; margin-bottom: 42px; }
 /* each section keeps a small gap to the next (the transparent border), like the gauge */
-.bar-seg { position: absolute; top: 16px; height: 12px; border: 0 solid transparent; border-width: 0 1.5px; border-radius: 4px; background-clip: padding-box; opacity: 0.3; }
+.bar-seg { position: absolute; top: 0; height: 12px; border: 0 solid transparent; border-width: 0 1.5px; border-radius: 4px; background-clip: padding-box; opacity: 0.3; }
 .bar-seg.on { opacity: 1; }
-.bar-needle { position: absolute; top: 9px; width: 3px; height: 26px; margin-left: -1.5px; background: var(--text); border-radius: 2px; }
+.bar-needle { position: absolute; top: -7px; width: 3px; height: 26px; margin-left: -1.5px; background: var(--text); border-radius: 2px; }
 .bar-needle.ghost { opacity: 0.45; }
-.ghost-time { position: absolute; top: 36px; transform: translateX(-50%); font-size: 12px; color: #b9bac2; }
+.ghost-time { position: absolute; top: 20px; transform: translateX(-50%); font-size: 12px; color: #b9bac2; }
 .bar-summary { width: 270px; padding-left: 20px; border-left: 0.5px solid var(--line); line-height: 1.5; }
 
 .graph { display: block; width: 100%; height: auto; margin-top: 6px; }

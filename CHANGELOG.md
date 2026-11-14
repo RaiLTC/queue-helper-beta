@@ -2,6 +2,16 @@
 
 All notable changes to Queue Helper. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.06] - 2026-11-14
+
+### Changed
+
+- The bar sits in the middle of its card, with the forecast needle's time right under the needle
+
+### Fixed
+
+- The window didn't fade at all; it fades again when the mouse leaves, and only holds off after a page change until the mouse has been back in
+
 ## [0.1.05] - 2026-11-14
 
 ### Changed

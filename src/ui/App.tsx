@@ -80,8 +80,10 @@ export const App = ({ store, version, onScan, onStop, onClose, onView, onSetting
 	} as CSSProperties;
 
 	const tab = view === 'settings' || view === 'whatsnew' ? null : view;
+	// the mouse is in the window: a held fade may start again once it leaves (one store read per move, no redraw)
+	const inside = () => { if (store.get().fade === 'hold') store.set({ fade: 'entered' }); };
 	return (
-		<div className={classes} style={style} hidden={!open} role="dialog" aria-label={TEXT.name} onPointerEnter={() => { if (store.get().fade === 'hold') store.set({ fade: 'entered' }); }}
+		<div className={classes} style={style} hidden={!open} role="dialog" aria-label={TEXT.name} onPointerEnter={inside} onPointerMove={inside}
 			onPointerLeave={() => { if (store.get().fade === 'entered') store.set({ fade: 'armed' }); }}>
 			<Header version={version} view={view} unread={unread} onView={onView} onClose={onClose} />
 			<div className="body">

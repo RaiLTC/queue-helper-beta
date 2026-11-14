@@ -31,10 +31,10 @@ export type State = {
 	passThrough: number | null,
 	/** The part of the window over the open chat, cut out: a CSS clip-path, or ''. */
 	chatHole: string,
-	/** Fading (mouse away) waits for the mouse to come into the window and leave it again: after the window opens,
-	 *  changes page (and with it its size) or a game menu opens or closes, it holds ('hold'), then the mouse comes
-	 *  in ('entered'), and only its leaving after that lets it fade ('armed'). A leave caused by the window
-	 *  shrinking under a still mouse doesn't count, since no entry came first. */
+	/** Fading (mouse away). Normally 'armed': the window fades whenever the mouse is outside it. A page change (the
+	 *  window resizes itself) or a game menu opening or closing can leave the mouse outside through no move of the
+	 *  player's, so it holds the window visible ('hold') until the mouse is in the window again ('entered': moving
+	 *  inside counts, for a mouse that never left) and then leaves it ('armed'). */
 	fade: 'hold' | 'entered' | 'armed',
 };
 
