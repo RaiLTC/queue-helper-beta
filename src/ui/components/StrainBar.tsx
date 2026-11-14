@@ -39,7 +39,8 @@ export const StrainBar = ({ store }: { store: Store }) => {
 							style={{ left: pct(edges[k]!), width: pct(edges[k + 1]! - edges[k]!), background: z.color }} />
 					))}
 					<span className="bar-needle ghost" style={{ left: pct(ghost) }} />
-					<span className="ghost-time" style={{ left: pct(ghost) }}>{durShort(ghostT)}</span>
+					{/* the forecast needle's time, under it; at an end of the bar it lines up with that end instead */}
+					<span className="ghost-time" style={{ left: pct(ghost), transform: `translateX(${ghost < 0.03 ? -10 : ghost > 0.97 ? -90 : -50}%)` }}>{durShort(ghostT)}</span>
 					<span className="bar-needle" style={{ left: pct(now) }} />
 				</div>
 			</div>

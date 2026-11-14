@@ -67,11 +67,11 @@ export const App = ({ store, version, onScan, onStop, onClose, onView, onSetting
 	const stage = useStore(store, (s) => s.forecast?.now.stage ?? null);
 	const passThrough = useStore(store, (s) => s.passThrough);
 	const chatHole = useStore(store, (s) => s.chatHole);
-	const fadeArmed = useStore(store, (s) => s.fadeArmed);
+	const fadeState = useStore(store, (s) => s.fade);
 
 	const latest = latestVersion();
 	const unread = !!latest && (!settings.seenVersion || newer(latest, settings.seenVersion));
-	const classes = ['window', settings.fade && fadeArmed && 'fade', !settings.animations && 'still', passThrough !== null && 'passing'].filter(Boolean).join(' ');
+	const classes = ['window', settings.fade && fadeState === 'armed' && 'fade', !settings.animations && 'still', passThrough !== null && 'passing'].filter(Boolean).join(' ');
 	const style = {
 		...accentVars(accentColor(settings, stage)),
 		'--fade-opacity': settings.fadeOpacity / 100,
@@ -81,7 +81,8 @@ export const App = ({ store, version, onScan, onStop, onClose, onView, onSetting
 
 	const tab = view === 'settings' || view === 'whatsnew' ? null : view;
 	return (
-		<div className={classes} style={style} hidden={!open} role="dialog" aria-label={TEXT.name} onPointerLeave={() => store.set({ fadeArmed: true })}>
+		<div className={classes} style={style} hidden={!open} role="dialog" aria-label={TEXT.name} onPointerEnter={() => { if (store.get().fade === 'hold') store.set({ fade: 'entered' }); }}
+			onPointerLeave={() => { if (store.get().fade === 'entered') store.set({ fade: 'armed' }); }}>
 			<Header version={version} view={view} unread={unread} onView={onView} onClose={onClose} />
 			<div className="body">
 				<Rail tab={view} onTab={(t) => onView(t)} />

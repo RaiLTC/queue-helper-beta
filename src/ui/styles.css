@@ -165,6 +165,9 @@ button:disabled { cursor: default; opacity: 0.4; }
 .gauge-center { position: absolute; left: 0; right: 0; top: 66px; }
 /* the stage is what matters, so it's the big text; the % is the detail under it */
 .stage-name { font-size: var(--fs-stage); font-weight: 500; line-height: 1.15; white-space: nowrap; }
+/* the summary keeps one size whatever it says (hovering the graph changes the text): two single lines */
+.summary { height: 40px; }
+.summary > div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .summary-line { font-size: var(--fs-line); font-weight: 500; }
 
 /* the bar (Strain display: Bar) */
@@ -174,14 +177,14 @@ button:disabled { cursor: default; opacity: 0.4; }
 .bar-label.middle { transform: translateX(-50%); }
 .bar-label.start { left: 0; align-items: flex-start; }
 .bar-label.end { right: 0; align-items: flex-end; }
-.bar-track { position: relative; height: 44px; }
+.bar-track { position: relative; height: 52px; }
 /* each section keeps a small gap to the next (the transparent border), like the gauge */
 .bar-seg { position: absolute; top: 16px; height: 12px; border: 0 solid transparent; border-width: 0 1.5px; border-radius: 4px; background-clip: padding-box; opacity: 0.3; }
 .bar-seg.on { opacity: 1; }
 .bar-needle { position: absolute; top: 9px; width: 3px; height: 26px; margin-left: -1.5px; background: var(--text); border-radius: 2px; }
-.bar-needle.ghost { top: 10px; height: 24px; width: 0; margin-left: -1.25px; background: none; border-left: 2.5px dashed var(--text); border-radius: 0; opacity: 0.6; }
-.ghost-time { position: absolute; top: -12px; transform: translateX(-50%); font-size: 12px; color: #b9bac2; }
-.bar-summary { padding-left: 20px; border-left: 0.5px solid var(--line); line-height: 1.5; white-space: nowrap; }
+.bar-needle.ghost { opacity: 0.45; }
+.ghost-time { position: absolute; top: 36px; transform: translateX(-50%); font-size: 12px; color: #b9bac2; }
+.bar-summary { width: 270px; padding-left: 20px; border-left: 0.5px solid var(--line); line-height: 1.5; }
 
 .graph { display: block; width: 100%; height: auto; margin-top: 6px; }
 .band.peak { fill: var(--peak); opacity: 0.14; }

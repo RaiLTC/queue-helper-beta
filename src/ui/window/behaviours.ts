@@ -48,7 +48,7 @@ export const attachWindowBehaviours = ({ store, windowEl, close, rescan }: Optio
 		}
 		// a game menu opening or closing under the window holds off the fade, as opening the window does
 		const menuChanged = (passThrough === null) !== (store.get().passThrough === null);
-		store.set({ passThrough, chatHole, ...(menuChanged ? { fadeArmed: false } : {}) });
+		store.set({ passThrough, chatHole, ...(menuChanged ? { fade: 'hold' as const } : {}) });
 
 		// the queue was edited (not just played through): scan again once the edits settle
 		const { forecast, scan } = store.get();
