@@ -132,7 +132,8 @@ button { cursor: pointer; }
 .zone { fill: none; stroke-width: 12; opacity: 0.3; }
 .zone.on { opacity: 1; }
 .needle { stroke: var(--text); stroke-width: 3; stroke-linecap: round; }
-.needle.ghost { stroke-width: 2.5; stroke-dasharray: 3 2; opacity: 0.6; }
+/* butt caps: round ones would join the dashes into a solid bar */
+.needle.ghost { stroke-width: 2.5; stroke-dasharray: 3 2; stroke-linecap: butt; opacity: 0.6; }
 .ghost-label { fill: #b9bac2; font-size: 12px; text-anchor: middle; }
 .gauge-center { position: absolute; left: 0; right: 0; top: 62px; }
 .gauge-pct { font-size: var(--fs-hero); font-weight: 500; line-height: 1.1; }

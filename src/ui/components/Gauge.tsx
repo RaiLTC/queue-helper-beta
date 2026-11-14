@@ -57,7 +57,7 @@ export const Gauge = ({ store }: { store: Store }) => {
 	return (
 		<div className="card gauge-card">
 			<div className="gauge">
-				<svg viewBox="0 0 170 130" aria-hidden="true">
+				<svg viewBox="-10 -12 190 145" aria-hidden="true">
 					{ZONES.map((z) => (
 						<path key={z.id} d={arc(z.from + 0.006, z.to - 0.006)} stroke={z.color} className={z === current ? 'zone on' : 'zone'} />
 					))}

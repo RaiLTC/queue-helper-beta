@@ -2,6 +2,14 @@
 
 All notable changes to Queue Helper. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.02] - 2026-11-14
+
+### Changed
+
+- The gauge has the planned size, and its ghost needle is dashed again
+- Taller Peak and XP Penalty bands on the graph
+- The strain line is smoothed (averaged over a few minutes) instead of zig-zagging with every play
+
 ## [0.1.01] - 2026-11-14
 
 ### Changed
