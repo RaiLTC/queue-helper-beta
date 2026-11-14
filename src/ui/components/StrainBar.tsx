@@ -4,6 +4,7 @@
 
 import { durShort, pctText } from '../format.js';
 import { type Store, useStore } from '../store.js';
+import { useStrainView } from '../strainView.js';
 import { layoutOf } from '../summary.js';
 import { ZONES, stageName, zoneOf } from '../zones.js';
 import { StrainSummary } from './StrainSummary.js';
@@ -15,13 +16,12 @@ const TIME_EDGE = 0.04;
 const pct = (at: number) => `${at * 100}%`;
 
 export const StrainBar = ({ store }: { store: Store }) => {
-	const f = useStore(store, (s) => s.forecast);
-	const hoverT = useStore(store, (s) => s.hoverT);
+	const view = useStrainView(store);
 	const mode = useStore(store, (s) => s.settings.proportions);
-	if (!f) return null;
+	if (!view) return null;
 
-	const { edges, now, ghost, ghostT, ghostSample } = layoutOf(f, mode, hoverT);
-	const current = zoneOf(f.now.bar);
+	const { edges, now, ghost } = layoutOf(view.knots, view.minutes, mode, view.ghost?.sample ?? null);
+	const current = zoneOf(view.bar);
 	const i = ZONES.indexOf(current);
 	const middle = (edges[i]! + edges[i + 1]!) / 2;
 	const side = middle <= EDGE ? 'start' : middle >= 1 - EDGE ? 'end' : 'middle';
@@ -31,8 +31,8 @@ export const StrainBar = ({ store }: { store: Store }) => {
 			<div>
 				<div className="bar-top">
 					<div className={`bar-label ${side}`} style={side === 'middle' ? { left: pct(middle) } : undefined}>
-						<span className="stage-name" style={{ color: current.color }}>{stageName(f.now.bar)}</span>
-						<span className="muted">{pctText(f.now.bar)}</span>
+						<span className="stage-name" style={{ color: current.color }}>{stageName(view.bar)}</span>
+						<span className="muted">{pctText(view.bar)}</span>
 					</div>
 				</div>
 				<div className="bar-track" aria-hidden="true">
@@ -40,14 +40,18 @@ export const StrainBar = ({ store }: { store: Store }) => {
 						<span key={z.id} className={z === current ? 'bar-seg on' : 'bar-seg'}
 							style={{ left: pct(edges[k]!), width: pct(edges[k + 1]! - edges[k]!), background: z.color }} />
 					))}
-					<span className="bar-needle ghost" style={{ left: pct(ghost) }} />
-					{/* the forecast needle's time, centred under it; near an end of the bar it sits beside the needle instead,
-					    towards the middle (as Queue Strain's bar did) */}
-					<span className={`ghost-time${ghost < TIME_EDGE ? ' after' : ghost > 1 - TIME_EDGE ? ' before' : ''}`} style={{ left: pct(ghost) }}>{durShort(ghostT)}</span>
+					{ghost !== null && view.ghost && (
+						<>
+							<span className="bar-needle ghost" style={{ left: pct(ghost) }} />
+							{/* the forecast needle's time, centred under it; near an end of the bar it sits beside the needle
+							    instead, towards the middle (as Queue Strain's bar did) */}
+							<span className={`ghost-time${ghost < TIME_EDGE ? ' after' : ghost > 1 - TIME_EDGE ? ' before' : ''}`} style={{ left: pct(ghost) }}>{durShort(view.ghost.t)}</span>
+						</>
+					)}
 					<span className="bar-needle" style={{ left: pct(now) }} />
 				</div>
 			</div>
-			<div className="bar-summary"><StrainSummary f={f} hoverT={hoverT} at={ghostSample} /></div>
+			<div className="bar-summary"><StrainSummary view={view} /></div>
 		</div>
 	);
 };

@@ -2,6 +2,18 @@
 
 All notable changes to Queue Helper. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.09] - 2026-11-14
+
+### Added
+
+- XP page: XP per hour, over the look-ahead and per loop, your medals and genetics, each skill's XP and share, and a check against your recent plays
+- XP rates per hour, minute or second
+- 7K: the Overview shows your 7K strain now (the game's simulator is 4K only, so there's no 7K forecast yet)
+
+### Changed
+
+- Queue Forecast shows each map's song over its difficulty and its number in the queue, and whole rows only
+
 ## [0.1.08] - 2026-11-14
 
 ### Changed

@@ -1,9 +1,10 @@
 // The warm-up gauge: the five stages on a 240° arc, sized by the Proportions setting. The stage you're in is
-// highlighted, a solid needle marks now and a dashed one where you'll be (the end of the look-ahead, or the graph's
-// hovered time).
+// highlighted, a solid needle marks now and, with a forecast, a dashed one where you'll be (the end of the
+// look-ahead, or the graph's hovered time).
 
 import { durShort, pctText } from '../format.js';
 import { type Store, useStore } from '../store.js';
+import { useStrainView } from '../strainView.js';
 import { layoutOf } from '../summary.js';
 import { ZONES, stageName, zoneOf } from '../zones.js';
 import { StrainSummary } from './StrainSummary.js';
@@ -24,14 +25,13 @@ const Needle = ({ at, from, to, className }: { at: number, from: number, to: num
 };
 
 export const Gauge = ({ store }: { store: Store }) => {
-	const f = useStore(store, (s) => s.forecast);
-	const hoverT = useStore(store, (s) => s.hoverT);
+	const view = useStrainView(store);
 	const mode = useStore(store, (s) => s.settings.proportions);
-	if (!f) return null;
+	if (!view) return null;
 
-	const { edges, now, ghost, ghostT, ghostSample } = layoutOf(f, mode, hoverT);
-	const current = zoneOf(f.now.bar);
-	const [lx, ly] = point(ghost, 88);
+	const { edges, now, ghost } = layoutOf(view.knots, view.minutes, mode, view.ghost?.sample ?? null);
+	const current = zoneOf(view.bar);
+	const label = ghost === null ? null : point(ghost, 88);
 
 	return (
 		<div className="card gauge-card">
@@ -40,16 +40,20 @@ export const Gauge = ({ store }: { store: Store }) => {
 					{ZONES.map((z, i) => (
 						<path key={z.id} d={arc(edges[i]! + GAP, Math.max(edges[i]! + GAP, edges[i + 1]! - GAP))} stroke={z.color} className={z === current ? 'zone on' : 'zone'} />
 					))}
-					<Needle className="needle ghost" at={ghost} from={52} to={76} />
-					<text className="ghost-label" x={lx} y={ly + 4}>{durShort(ghostT)}</text>
+					{ghost !== null && label && view.ghost && (
+						<>
+							<Needle className="needle ghost" at={ghost} from={52} to={76} />
+							<text className="ghost-label" x={label[0]} y={label[1] + 4}>{durShort(view.ghost.t)}</text>
+						</>
+					)}
 					<Needle className="needle" at={now} from={53} to={75} />
 				</svg>
 				<div className="gauge-center">
-					<div className="stage-name" style={{ color: current.color }}>{stageName(f.now.bar)}</div>
-					<div className="muted">{pctText(f.now.bar)}</div>
+					<div className="stage-name" style={{ color: current.color }}>{stageName(view.bar)}</div>
+					<div className="muted">{pctText(view.bar)}</div>
 				</div>
 			</div>
-			<StrainSummary f={f} hoverT={hoverT} at={ghostSample} />
+			<StrainSummary view={view} />
 		</div>
 	);
 };

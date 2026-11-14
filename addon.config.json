@@ -4,5 +4,8 @@
   "entry": "src/index.ts",
   "outfile": "dist/queue-helper.js",
   "sharedReact": true,
-  "types": ["gameplay"]
+  "types": [
+    "gameplay"
+  ],
+  "gameVersion": "1.5.0.0"
 }

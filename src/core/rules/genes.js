@@ -17,12 +17,14 @@ export const asGenetics = (v) => {
   try { return v ? JSON.parse(v) : null; } catch (_) { return null; }
 };
 /** The fatigue genes of a character's genetics. */
-export const fatigueGenesOf = (json) => {
+/** The fatigue genes a genetics JSON holds, at the strength its picks give them. `ring` is the mode's genetics ring
+ *  (each mode orders its skills differently, so Stamina has different neighbours). */
+export const fatigueGenesOf = (json, ring = RING) => {
   const g = asGenetics(json);
   if (!g || !g.genes) return {};
   const picked = (g.picks || []).map(p => p.skill);
-  const at = RING.indexOf('stamina'), n = RING.length;
-  const strength = picked.reduce((sum, p) => sum + (p === 'stamina' ? 1 : (p === RING[(at + 1) % n] || p === RING[(at + n - 1) % n] ? 0.5 : 0)), 0);
+  const at = ring.indexOf('stamina'), n = ring.length;
+  const strength = picked.reduce((sum, p) => sum + (p === 'stamina' ? 1 : (p === ring[(at + 1) % n] || p === ring[(at + n - 1) % n] ? 0.5 : 0)), 0);
   const out = {};
   for (const [id, [effect, per]] of Object.entries(FATIGUE_GENES)) {
     const tiers = (g.genes[id] || 0) * strength;

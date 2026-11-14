@@ -1,7 +1,7 @@
 // What the strain display says and draws, shared by the gauge and the bar: the summary lines, the stage edges as
 // the Proportions setting draws them, and where now and the ghost needle fall.
 
-import { firstTime, sampleAt, type Forecast, type Sample } from '../core/scan.js';
+import { firstTime, type Forecast, type Sample } from '../core/scan.js';
 import type { Proportions } from '../settings.js';
 import { TEXT } from '../text.js';
 import { durText, pctText } from './format.js';
@@ -37,16 +37,13 @@ export type Layout = {
 	/** The five stages' edges on the display, 0 to 1. */
 	edges: number[],
 	now: number,
-	ghost: number,
-	/** The ghost needle's moment: the graph's hovered time, or the end of the look-ahead. */
-	ghostT: number,
-	ghostSample: Sample,
+	/** Where the ghost needle falls, or null without a forecast. */
+	ghost: number | null,
 };
 
-export const layoutOf = (f: Forecast, mode: Proportions, hoverT: number | null): Layout => {
-	const minutes = stageMinutes(f.knots);
+/** Where things fall on the gauge or bar: the stages sized by the Proportions setting, now, and the ghost needle. */
+export const layoutOf = (knots: number[], nowMinutes: number, mode: Proportions, ghost: Sample | null): Layout => {
+	const minutes = stageMinutes(knots);
 	const edges = stageEdges(minutes, mode);
-	const ghostT = hoverT ?? f.hours * 3600;
-	const ghostSample = hoverT === null ? f.samples[f.samples.length - 1]! : sampleAt(f.samples, hoverT);
-	return { edges, now: spotOf(f.now.minutes, minutes, edges), ghost: spotOf(ghostSample.minutes, minutes, edges), ghostT, ghostSample };
+	return { edges, now: spotOf(nowMinutes, minutes, edges), ghost: ghost ? spotOf(ghost.minutes, minutes, edges) : null };
 };

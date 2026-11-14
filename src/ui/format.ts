@@ -5,7 +5,13 @@ const compact = new Intl.NumberFormat('en', { notation: 'compact', minimumFracti
 /** 18400 → "18.4K", 6000 → "6.0K", 111 → "111". */
 export const xpText = (n: number): string => (n >= 1000 ? compact.format(n) : String(Math.round(n)));
 
-/** "Artist - Title [Difficulty]" → "Title": the full name stays in the row's tooltip. */
+/** "Artist - Title [Difficulty]" → its song title and its difficulty (the full name stays in the row's tooltip). */
+export const mapParts = (full: string): { title: string, difficulty: string } => {
+	const difficulty = /\[([^\]]*)\]\s*$/.exec(full)?.[1] ?? '';
+	return { title: mapTitle(full), difficulty };
+};
+
+/** "Artist - Title [Difficulty]" → "Title". */
 export const mapTitle = (full: string): string => {
 	const noDiff = full.replace(/\s*\[[^\]]*\]\s*$/, '');
 	const dash = noDiff.indexOf(' - ');
@@ -30,9 +36,6 @@ export const durShort = (sec: number): string => {
 	if (!h) return `${m}m`;
 	return m ? `${h}h${m}m` : `${h}h`;
 };
-
-/** Seconds from now as a clock: "0:05", "1:40". */
-export const clockText = (sec: number): string => `${Math.floor(sec / 3600)}:${String(Math.floor(sec / 60) % 60).padStart(2, '0')}`;
 
 /** Minutes as "54s", "1.8 min" or "1.2 h". */
 export const lengthText = (min: number): string => {

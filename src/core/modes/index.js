@@ -3,13 +3,16 @@
 //
 // id: the game's ruleset id (host.ruleset.current()), for example 'mania4k'.
 // skills: the mode's skill ids, as the game's database and API name them.
+// skillNames: what players see for each.
 // physical: the skills strain wears down.
+// progress: where the game keeps the character's levels, upgrades and genetics for the mode.
+// ring: the mode's genetics ring, which decides how strong its Stamina genes are.
 // forecast: whether the server's simulator supports the mode, which the forecast needs.
 
 import { MANIA_4K } from './mania4k.js';
 import { MANIA_7K } from './mania7k.js';
 
-/** @typedef {{ id: string, name: string, skills: string[], physical: string[], forecast: boolean }} Mode */
+/** @typedef {{ id: string, name: string, skills: string[], skillNames: Record<string, string>, physical: string[], progress: { table: string, key: string }, ring: string[], forecast: boolean }} Mode */
 
 /** @type {Record<string, Mode>} */
 export const MODES = {

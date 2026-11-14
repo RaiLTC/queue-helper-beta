@@ -1,0 +1,18 @@
+/* The XP page. */
+
+.xp-stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gap); }
+.stat-value { margin-top: 2px; font-size: 22px; font-weight: 500; white-space: nowrap; }
+
+/* the breakdown switch on the left, the rate on the right */
+.xp-switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px; }
+
+.xp-row { display: grid; align-items: center; gap: 16px; min-height: 38px; border-top: 0.5px solid var(--line); }
+.xp-head { min-height: 0; padding: 6px 0; border-top: 0; color: var(--muted); font-size: 11px; }
+.xp-skill { grid-template-columns: 120px minmax(0, 1fr) 70px 70px 48px; }
+.xp-check { grid-template-columns: 120px repeat(3, minmax(0, 1fr)) 64px; }
+.xp-row > :nth-child(n + 3), .xp-check > :nth-child(2) { text-align: right; }
+.xp-bar { display: block; height: 8px; overflow: hidden; background: var(--line); border-radius: 4px; }
+.xp-bar i { display: block; height: 100%; border-radius: 4px; transform-origin: left; }
+
+.good { color: #5dcaa5; }
+.warn { color: var(--pushing); }

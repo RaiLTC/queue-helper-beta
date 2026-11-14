@@ -15,9 +15,10 @@ import strainGraph from './components/StrainGraph.css';
 import strainSummary from './components/StrainSummary.css';
 import settingsPage from './pages/SettingsPage.css';
 import whatsNew from './pages/WhatsNew.css';
+import xpPage from './pages/XpPage.css';
 
 export const STYLESHEET = [
 	base, icon, header, rail, scanBar,
 	gauge, strainSummary, strainBar, strainGraph, queueForecast,
-	controls, settingsPage, whatsNew,
+	controls, settingsPage, whatsNew, xpPage,
 ].join('\n');

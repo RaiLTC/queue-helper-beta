@@ -8,12 +8,17 @@ export type ClickOutside = 'close' | 'through' | 'nothing';
 export type EscEditing = 'addon' | 'both';
 export type StrainDisplay = 'gauge' | 'bar';
 export type Proportions = 'even' | 'balanced' | 'scale';
+export type RateUnit = 'h' | 'm' | 's';
+export type XpView = 'skill' | 'map';
 
 export type Settings = {
 	lookAhead: number,
 	runsPerPlay: number,
 	rescanOnChange: boolean,
 	strainDisplay: StrainDisplay,
+	/** The XP page's rates: per hour, minute or second. */
+	rateUnit: RateUnit,
+	xpView: XpView,
 	proportions: Proportions,
 	accent: AccentId,
 	customAccent: string,
@@ -35,6 +40,8 @@ export const DEFAULTS: Settings = {
 	runsPerPlay: 2,
 	rescanOnChange: true,
 	strainDisplay: 'gauge',
+	rateUnit: 'h',
+	xpView: 'skill',
 	proportions: 'even',
 	accent: 'peak',
 	customAccent: '#4fd1c5',

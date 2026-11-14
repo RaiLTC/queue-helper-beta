@@ -6,6 +6,8 @@ import type { ReactNode } from 'react';
 import { ReactAddon } from '@oss-idle/addon-sdk/react';
 import { modeOf } from './core/modes/index.js';
 import { ScanError, runScan } from './core/scan.js';
+import { readStrainNow } from './core/strainNow.js';
+import type { Mode } from './core/modes/index.js';
 import { LIMITS, type Settings, settingsStore } from './settings.js';
 import { TEXT } from './text.js';
 import { App } from './ui/App.js';
@@ -32,7 +34,7 @@ export class QueueHelper extends ReactAddon {
 		const settings = loadSettings();
 		return createStore({
 			open: false, view: 'overview', lookAhead: settings.lookAhead, scan: { status: 'idle' }, forecast: null, hoverT: null,
-			unsupported: null, settings, undo: null, passThrough: null, chatHole: '', fade: 'armed',
+			unsupported: null, strainNow: null, settings, undo: null, passThrough: null, chatHole: '', fade: 'armed',
 		});
 	})();
 	private scanning?: AbortController;
@@ -67,15 +69,33 @@ export class QueueHelper extends ReactAddon {
 		await super.onUnmount();
 	}
 
+	/** The game mode picked in game, when the forecast doesn't support it (7K): its strain is shown as it is now. */
+	private noForecastMode: Mode | null = null;
+
 	private followMode(id: string): void {
 		const mode = modeOf(id);
-		this.store.set({ unsupported: mode && !mode.forecast ? mode.name : null });
+		this.noForecastMode = mode && !mode.forecast ? mode : null;
+		this.store.set({ unsupported: this.noForecastMode ? this.noForecastMode.name : null, strainNow: null });
+		if (this.noForecastMode && this.store.get().open) void this.readNow(this.noForecastMode);
+	}
+
+	/** A mode without a forecast: read its strain as it is now (one API call and one database read). */
+	private async readNow(mode: Mode): Promise<void> {
+		try {
+			const strainNow = await readStrainNow(this.game.api, mode);
+			if (this.noForecastMode === mode) this.store.set({ strainNow, scan: { status: 'idle' } });
+		} catch (e) {
+			const known = e instanceof ScanError ? TEXT.errors[e.message] : undefined;
+			this.log.error('strain read failed', e);
+			this.store.set({ scan: { status: 'error', message: typeof known === 'string' ? known : TEXT.errors.unknown as string } });
+		}
 	}
 
 	private setOpen(open: boolean): void {
 		if (open === this.store.get().open) return;
 		this.store.set({ open, hoverT: null, fade: 'armed' });
 		if (open) {
+			if (this.noForecastMode) void this.readNow(this.noForecastMode);
 			this.detach = attachWindowBehaviours({
 				store: this.store,
 				windowEl: () => document.getElementById('queue-helper')?.shadowRoot?.querySelector<HTMLElement>('.window') ?? null,
@@ -109,7 +129,8 @@ export class QueueHelper extends ReactAddon {
 
 	private async scan(quick = false): Promise<void> {
 		const { store } = this;
-		if (this.scanning || store.get().unsupported) return;
+		if (this.noForecastMode) { await this.readNow(this.noForecastMode); return; }
+		if (this.scanning) return;
 		const controller = new AbortController();
 		this.scanning = controller;
 		store.set({ scan: { status: 'scanning', done: 0, text: TEXT.scan.reading }, hoverT: null });

@@ -3,6 +3,7 @@
 
 import { useSyncExternalStore } from 'react';
 import type { Forecast } from '../core/scan.js';
+import type { StrainNow } from '../core/strainNow.js';
 import type { Settings } from '../settings.js';
 
 export type TabId = 'overview' | 'xp' | 'levels' | 'jam' | 'suggest';
@@ -24,6 +25,8 @@ export type State = {
 	hoverT: number | null,
 	/** The game mode's name when the forecast doesn't support it, or null. */
 	unsupported: string | null,
+	/** In a mode without a forecast: its strain as it is now. */
+	strainNow: StrainNow | null,
 	settings: Settings,
 	/** The settings before the last reset, while Undo is offered. */
 	undo: Settings | null,

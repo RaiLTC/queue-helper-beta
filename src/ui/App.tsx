@@ -13,6 +13,7 @@ import { StrainBar } from './components/StrainBar.js';
 import { StrainGraph } from './components/StrainGraph.js';
 import { SettingsPage } from './pages/SettingsPage.js';
 import { WhatsNew, latestVersion, newer } from './pages/WhatsNew.js';
+import { XpPage } from './pages/XpPage.js';
 import { type Store, type View, useStore } from './store.js';
 import { accentColor, accentVars } from './theme.js';
 
@@ -26,7 +27,8 @@ const Overview = ({ store }: { store: Store }) => {
 	const has = useStore(store, (s) => !!s.forecast);
 	const unsupported = useStore(store, (s) => s.unsupported);
 	const bar = useStore(store, (s) => s.settings.strainDisplay === 'bar');
-	if (unsupported) return <div className="card empty">{(TEXT.errors.noForecast as (m: string) => string)(unsupported)}</div>;
+	// a mode without a forecast (7K): its strain as it is now, nothing ahead
+	if (unsupported) return bar ? <Boundary><StrainBar store={store} /></Boundary> : <div className="overview-top"><Boundary><Gauge store={store} /></Boundary><div className="card empty">{(TEXT.errors.noForecast as (m: string) => string)(unsupported)}</div></div>;
 	if (!has) return <div className="card empty">{TEXT.overview.start}</div>;
 	if (bar) {
 		return (
@@ -94,7 +96,9 @@ export const App = ({ store, version, onScan, onStop, onClose, onView, onSetting
 							: (
 								<>
 									<ScanBar store={store} onScan={onScan} onStop={onStop} />
-									{tab === 'overview' ? <Overview store={store} /> : <div className="card empty">{TEXT.comingSoon}</div>}
+									{tab === 'overview' ? <Overview store={store} />
+										: tab === 'xp' ? <Boundary><XpPage store={store} onSettings={onSettings} /></Boundary>
+											: <div className="card empty">{TEXT.comingSoon}</div>}
 								</>
 							)}
 				</main>
