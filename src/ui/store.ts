@@ -31,6 +31,9 @@ export type State = {
 	passThrough: number | null,
 	/** The part of the window over the open chat, cut out: a CSS clip-path, or ''. */
 	chatHole: string,
+	/** Fading (mouse away) only starts once the mouse has been in the window and left it: not right after it opens,
+	 *  changes page, or a game menu opens or closes. */
+	fadeArmed: boolean,
 };
 
 export const createStore = (initial: State) => {

@@ -2,6 +2,20 @@
 
 All notable changes to Queue Helper. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.04] - 2026-11-14
+
+### Added
+
+- Strain display: a bar instead of the gauge, with the stage over its section
+- Proportions: Even, Balanced or To scale, so Peak can grow with your Stamina upgrades
+- osu! pink as an accent colour
+
+### Changed
+
+- The selected option in settings shows the accent colour
+- The window only starts fading once your mouse has been in it and left, not right after opening it or changing page
+- A slightly smaller stage name, so it fits inside the gauge
+
 ## [0.1.03] - 2026-11-14
 
 ### Added

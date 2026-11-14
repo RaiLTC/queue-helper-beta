@@ -5,17 +5,18 @@ import { type AccentId, DEFAULTS, LIMITS, type Settings } from '../../settings.j
 import { TEXT } from '../../text.js';
 import { Row, Segmented, Slider, Stepper, Switch } from '../components/controls.js';
 import { type Store, useStore } from '../store.js';
+import { OSU_PINK } from '../theme.js';
 import { colorOf } from '../zones.js';
 
 const T = TEXT.settings;
-const ACCENTS: AccentId[] = ['cold', 'warming', 'peak', 'pushing', 'fatigued', 'stage', 'custom'];
+const ACCENTS: AccentId[] = ['cold', 'warming', 'peak', 'pushing', 'fatigued', 'stage', 'osu', 'custom'];
 const UNDO_MS = 6000;
 
 const Swatches = ({ value, custom, onPick }: { value: AccentId, custom: string, onPick: (id: AccentId) => void }) => (
 	<div className="swatches" role="radiogroup" aria-label={T.accent}>
 		{ACCENTS.map((id) => (
 			<button key={id} type="button" role="radio" aria-checked={id === value} onClick={() => onPick(id)}>
-				<span className={`swatch swatch-${id}`} style={id === 'custom' ? { background: custom } : id === 'stage' ? undefined : { background: colorOf(id) }} />
+				<span className={`swatch swatch-${id}`} style={id === 'custom' ? { background: custom } : id === 'stage' ? undefined : { background: id === 'osu' ? OSU_PINK : colorOf(id) }} />
 				{T.accents[id]}
 			</button>
 		))}
@@ -49,6 +50,8 @@ export const SettingsPage = ({ store, onChange }: { store: Store, onChange: (pat
 
 			<p className="group">{T.appearance}</p>
 			<div className="card list">
+				<Row label={T.display}><Segmented label={T.display} value={s.strainDisplay} options={Object.entries(T.displayOptions) as [Settings['strainDisplay'], string][]} onChange={(v) => onChange({ strainDisplay: v })} /></Row>
+				<Row label={T.proportions} description={T.proportionsHelp}><Segmented label={T.proportions} value={s.proportions} options={Object.entries(T.proportionsOptions) as [Settings['proportions'], string][]} onChange={(v) => onChange({ proportions: v })} /></Row>
 				<Row label={T.accent} description={T.accentHelp}><Swatches value={s.accent} custom={s.customAccent} onPick={(id) => onChange({ accent: id })} /></Row>
 				{s.accent === 'custom' && (
 					<Row label={T.customColour} sub>

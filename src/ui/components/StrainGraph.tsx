@@ -7,7 +7,9 @@ import { TEXT } from '../../text.js';
 import { type Store, useStore } from '../store.js';
 import { PEAK, PENALTY } from '../zones.js';
 
-const W = 600, H = 190, X0 = 84, X1 = 584, Y0 = 8, Y1 = 164, STEP = 600;
+// drawing units: the narrow graph (beside the gauge) is 600 wide, the full-width one (under the bar) 860, so text
+// and lines keep one size
+const H = 190, X0 = 84, Y0 = 8, Y1 = 164, STEP = 600;
 
 // The bar's height on the graph, stretched so the Peak band (40-60%) and the XP Penalty band (80-100%) get room
 // to read: each [bar, height] pair is a point of a piecewise-linear scale.
@@ -46,7 +48,8 @@ const smoothPath = (samples: Sample[], span: number, x: (t: number) => number): 
 	return d;
 };
 
-export const StrainGraph = ({ store }: { store: Store }) => {
+export const StrainGraph = ({ store, wide = false }: { store: Store, wide?: boolean }) => {
+	const W = wide ? 860 : 600, X1 = W - 16;
 	const f = useStore(store, (s) => s.forecast);
 	const hoverT = useStore(store, (s) => s.hoverT);
 	const svgRef = useRef<SVGSVGElement>(null);
@@ -54,7 +57,7 @@ export const StrainGraph = ({ store }: { store: Store }) => {
 
 	const span = (f?.hours ?? 1) * 3600;
 	const x = (t: number) => X0 + (t / span) * (X1 - X0);
-	const line = useMemo(() => (f ? smoothPath(f.samples, span, x) : ''), [f]);
+	const line = useMemo(() => (f ? smoothPath(f.samples, span, x) : ''), [f, W]);
 	if (!f) return null;
 
 	// one store update a frame at most, however fast the pointer moves

@@ -1,9 +1,12 @@
-// The accent colour: one of the stage colours (Peak by default), the stage you're in, or a custom one. From it come
+// The accent colour: one of the stage colours (Peak by default), the stage you're in, osu! pink, or a custom one. From it come
 // the soft highlight, the light text on dark highlights, and the text or knob colour that reads on the accent itself.
 
 import type { CSSProperties } from 'react';
 import type { Settings } from '../settings.js';
 import { PEAK, colorOf } from './zones.js';
+
+/** osu!'s own pink. */
+export const OSU_PINK = '#ff66aa';
 
 const rgb = (hex: string): [number, number, number] => {
 	const n = Number.parseInt(hex.replace('#', ''), 16) || 0;
@@ -13,6 +16,7 @@ const rgb = (hex: string): [number, number, number] => {
 export const accentColor = (s: Settings, stage: string | null): string => {
 	if (s.accent === 'custom') return /^#[0-9a-f]{6}$/i.test(s.customAccent) ? s.customAccent : PEAK.color;
 	if (s.accent === 'stage') return stage ? colorOf(stage) : PEAK.color;
+	if (s.accent === 'osu') return OSU_PINK;
 	return colorOf(s.accent);
 };
 

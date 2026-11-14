@@ -27,7 +27,7 @@
 	--fs-title: 14px;
 	--fs-line: 15px;
 	--fs-page: 18px;
-	--fs-stage: 21px;
+	--fs-stage: 19px;
 
 	--gap: 10px;
 	--radius: 10px;
@@ -164,8 +164,24 @@ button:disabled { cursor: default; opacity: 0.4; }
 .ghost-label { fill: #b9bac2; font-size: 12px; text-anchor: middle; }
 .gauge-center { position: absolute; left: 0; right: 0; top: 66px; }
 /* the stage is what matters, so it's the big text; the % is the detail under it */
-.gauge-stage { font-size: var(--fs-stage); font-weight: 500; line-height: 1.15; white-space: nowrap; }
-.gauge-line { font-size: var(--fs-line); font-weight: 500; }
+.stage-name { font-size: var(--fs-stage); font-weight: 500; line-height: 1.15; white-space: nowrap; }
+.summary-line { font-size: var(--fs-line); font-weight: 500; }
+
+/* the bar (Strain display: Bar) */
+.strain-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 14px 18px; }
+.bar-top { position: relative; height: 42px; }
+.bar-label { position: absolute; bottom: 0; display: flex; flex-direction: column; align-items: center; line-height: 1.15; white-space: nowrap; transition: left var(--ease), transform var(--ease); }
+.bar-label.middle { transform: translateX(-50%); }
+.bar-label.start { left: 0; align-items: flex-start; }
+.bar-label.end { right: 0; align-items: flex-end; }
+.bar-track { position: relative; height: 44px; }
+/* each section keeps a small gap to the next (the transparent border), like the gauge */
+.bar-seg { position: absolute; top: 16px; height: 12px; border: 0 solid transparent; border-width: 0 1.5px; border-radius: 4px; background-clip: padding-box; opacity: 0.3; }
+.bar-seg.on { opacity: 1; }
+.bar-needle { position: absolute; top: 9px; width: 3px; height: 26px; margin-left: -1.5px; background: var(--text); border-radius: 2px; }
+.bar-needle.ghost { top: 10px; height: 24px; width: 0; margin-left: -1.25px; background: none; border-left: 2.5px dashed var(--text); border-radius: 0; opacity: 0.6; }
+.ghost-time { position: absolute; top: -12px; transform: translateX(-50%); font-size: 12px; color: #b9bac2; }
+.bar-summary { padding-left: 20px; border-left: 0.5px solid var(--line); line-height: 1.5; white-space: nowrap; }
 
 .graph { display: block; width: 100%; height: auto; margin-top: 6px; }
 .band.peak { fill: var(--peak); opacity: 0.14; }
@@ -229,7 +245,7 @@ button:disabled { cursor: default; opacity: 0.4; }
 .segmented { display: inline-flex; flex: none; gap: 2px; padding: 2px; background: var(--field); border: 1px solid var(--line-strong); border-radius: var(--radius-sm); }
 .segmented button { padding: 5px 10px; color: var(--muted); background: none; border: 0; border-radius: 6px; font-size: var(--fs-small); }
 .segmented button:hover:not([aria-checked='true']) { color: var(--text); background: var(--hover); }
-.segmented button[aria-checked='true'] { color: var(--text); background: var(--line); }
+.segmented button[aria-checked='true'] { color: var(--ink); background: var(--soft); box-shadow: inset 0 0 0 1px var(--a); }
 
 /* a neutral track; only the knob takes the accent, and only while it's held */
 .slider { display: flex; align-items: center; gap: 10px; flex: none; }

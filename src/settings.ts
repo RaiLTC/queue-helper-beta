@@ -3,14 +3,18 @@
 
 import { createSettings } from '@oss-idle/addon-sdk';
 
-export type AccentId = 'cold' | 'warming' | 'peak' | 'pushing' | 'fatigued' | 'stage' | 'custom';
+export type AccentId = 'cold' | 'warming' | 'peak' | 'pushing' | 'fatigued' | 'stage' | 'osu' | 'custom';
 export type ClickOutside = 'close' | 'through' | 'nothing';
 export type EscEditing = 'addon' | 'both';
+export type StrainDisplay = 'gauge' | 'bar';
+export type Proportions = 'even' | 'balanced' | 'scale';
 
 export type Settings = {
 	lookAhead: number,
 	runsPerPlay: number,
 	rescanOnChange: boolean,
+	strainDisplay: StrainDisplay,
+	proportions: Proportions,
 	accent: AccentId,
 	customAccent: string,
 	animations: boolean,
@@ -30,6 +34,8 @@ export const DEFAULTS: Settings = {
 	lookAhead: 6,
 	runsPerPlay: 2,
 	rescanOnChange: true,
+	strainDisplay: 'gauge',
+	proportions: 'even',
 	accent: 'peak',
 	customAccent: '#4fd1c5',
 	animations: true,

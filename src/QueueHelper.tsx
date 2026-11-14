@@ -32,7 +32,7 @@ export class QueueHelper extends ReactAddon {
 		const settings = loadSettings();
 		return createStore({
 			open: false, view: 'overview', lookAhead: settings.lookAhead, scan: { status: 'idle' }, forecast: null, hoverT: null,
-			unsupported: null, settings, undo: null, passThrough: null, chatHole: '',
+			unsupported: null, settings, undo: null, passThrough: null, chatHole: '', fadeArmed: false,
 		});
 	})();
 	private scanning?: AbortController;
@@ -74,7 +74,7 @@ export class QueueHelper extends ReactAddon {
 
 	private setOpen(open: boolean): void {
 		if (open === this.store.get().open) return;
-		this.store.set({ open, hoverT: null });
+		this.store.set({ open, hoverT: null, fadeArmed: false });
 		if (open) {
 			this.detach = attachWindowBehaviours({
 				store: this.store,
@@ -96,7 +96,7 @@ export class QueueHelper extends ReactAddon {
 			const latest = latestVersion();
 			if (latest && settings.seenVersion !== latest) this.changeSettings({ seenVersion: latest });
 		}
-		this.store.set({ view, hoverT: null });
+		this.store.set({ view, hoverT: null, fadeArmed: false });
 	}
 
 	private changeSettings(patch: Partial<Settings>): void {

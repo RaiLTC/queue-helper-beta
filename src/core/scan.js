@@ -14,7 +14,7 @@ export class ScanError extends Error {}
  * @typedef {{ done: number, text: 'reading' | 'simulating' | 'waiting', waitSec?: number }} ScanProgress
  * @typedef {{ t: number, bar: number, minutes: number }} Sample
  * @typedef {{ start: number, title: string, xp: number, strained: number, lengthMin: number, bar: number, trend: number, passed: boolean }} Play
- * @typedef {{ hours: number, now: Sample & { stage: string }, samples: Sample[], plays: Play[], loop: { plays: number, sec: number }, scannedAt: number, queueKey: string[] }} Forecast
+ * @typedef {{ hours: number, now: Sample & { stage: string }, samples: Sample[], plays: Play[], loop: { plays: number, sec: number }, scannedAt: number, queueKey: string[], knots: number[] }} Forecast
  */
 
 /**
@@ -87,6 +87,8 @@ export async function runScan({ api, hours, runs, quick = false, signal, onProgr
 		loop: { plays: result.loopPlays, sec: result.loopSec },
 		scannedAt: Date.now(),
 		queueKey: queueKey(queue.entries),
+		// the bar's turning points in minutes of strain: 0, Peak's start and end, the XP Penalty, the cap
+		knots: result.knots,
 	};
 }
 
